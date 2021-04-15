@@ -1,13 +1,12 @@
 import React,{useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import {useDispatch} from 'react-redux'
-import {deleteMovie} from '../actions/moviesActions'
 import SearchMovie from './SearchMovie'
 import SortMovies from './SortMovies'
+import MovieCard from './MovieCard'
 import _ from 'lodash'
+import { Grid, Container } from '@material-ui/core';
 
 const MoviesList = (props) =>{
-    const dispatch = useDispatch()
     const movies = useSelector(state => state.movies)
     const [filteredMovies, setFilteredMovies] = useState([])
     const [searchText, setSearchText] = useState('')
@@ -53,34 +52,30 @@ const MoviesList = (props) =>{
        }
     }
 
-    //remove movie
-    const handleRemove = (id) =>{
-        dispatch(deleteMovie(id))
-    }
-
     return(
-        <div>
+        <Container>
             {movies.length >0 &&
                 <>
-                    <h2>Movies List</h2>
-                    <SearchMovie searchText={searchText} handleSearchChange={handleSearchChange}/>
-                    <SortMovies sortBy={sortBy} handleSort={handleSort} />
+                    <Grid container direction="row" spacing ={3}>
+                        <Grid item>
+                            <SearchMovie searchText={searchText} handleSearchChange={handleSearchChange}/>
+                        </Grid>
+                        <Grid item>
+                            <SortMovies sortBy={sortBy} handleSort={handleSort} />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing ={3}>
+                        {filteredMovies.map((movie) => {
+                            return (
+                                <Grid item md={4}>
+                                    <MovieCard key={movie.id} movie = {movie} />
+                                </Grid>
+                            )
+                        })}
+                    </Grid>
                 </>
             }
-            
-            {filteredMovies.map((movie) => {
-                return (
-                    <div key={movie.id}>
-                        <h3>{movie.movieName}</h3>
-                        <h3>{movie.imdbRanking}</h3>
-                        <button onClick={() =>{
-                            handleRemove(movie.id)
-                        }}>Delete</button>
-                    </div>
-                )
-            })}
-            
-        </div>
+        </Container>
     )
 }
 
