@@ -52,7 +52,6 @@ const MoviesList = (props) =>{
             
        }
     }
-
     //remove movie
     const handleRemove = (id) =>{
         dispatch(deleteMovie(id))
@@ -79,7 +78,6 @@ const MoviesList = (props) =>{
                     </div>
                 )
             })}
-            
         </div>
     )
 }
